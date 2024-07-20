@@ -1,0 +1,31 @@
+{
+    "source": {
+      "include": ["index.js", "src"],
+      "includePattern": ".js$",
+      "exclude": ["node_modules"]
+    },
+    "opts": {
+      "destination": "./docs",
+      "recurse": true,
+      "template": "node_modules/better-docs"
+    },
+    "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "better-docs": {
+      "name": "Face Detection Documentation",
+      "trackingCode": "tracking-code-which-will-go-to-the-head",
+      "navigation": [
+        {
+          "label": "Readme",
+          "href": "readme.html"
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/your/project"
+        }
+      ]
+    }
+  }
+}

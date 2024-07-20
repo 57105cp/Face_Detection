@@ -1,0 +1,205 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  tracking-code-which-will-go-to-the-head
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> frameProcessor.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+             
+                <a href="index.html">
+                    <h1 class="navbar-item">Face Detection Documentation</h1>
+                </a>
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Index.js</h3><ul><li><a href="global.html#loadModel">loadModel</a></li><li><a href="global.html#processFrame">processFrame</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>frameProcessor.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { createCanvas, loadImage } from 'canvas';
+import * as tf from '@tensorflow/tfjs-node';
+
+/**
+ * Processes an image frame and detects faces.
+ * @param {Buffer} buffer - The image buffer.
+ * @param {Object} model - The face detection model.
+ * @returns {Promise&lt;{canvas: Canvas, faces: Array}>} The processed canvas and detected faces.
+ */
+
+export async function processFrame(buffer, model) {
+  const img = await loadImage(buffer);
+  const canvas = createCanvas(img.width, img.height);
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+
+  const input = tf.browser.fromPixels(canvas);
+  const faces = await model.estimateFaces(input, false);
+  input.dispose();
+
+  const categorizedFaces = faces.map(face => {
+    const categorizedLandmarks = {
+      right_eye: face.landmarks[0],
+      left_eye: face.landmarks[1],
+      nose: face.landmarks[2],
+      mouth: face.landmarks[3],
+      right_ear: face.landmarks[4],
+      left_ear: face.landmarks[5],
+    };
+
+    return {
+      topLeft: face.topLeft,
+      bottomRight: face.bottomRight,
+      landmarks: categorizedLandmarks,
+      probability: face.probability
+    };
+  });
+
+  faces.forEach(face => {
+    const { topLeft, bottomRight, landmarks } = face;
+    const [x1, y1] = topLeft;
+    const [x2, y2] = bottomRight;
+    // console.log("LANDMARKS: ", face);
+
+    // Draw bounding box
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+
+    // Draw keypoints
+    landmarks.forEach(([x, y]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, 2 * Math.PI);
+      ctx.fillStyle = 'green';
+      ctx.fill();
+    });
+  });
+  return { canvas, faces: categorizedFaces };
+}
+
+
+// +++++++++++++++++++++++++++++++++++++++++
+// import { createCanvas, loadImage } from 'canvas';
+// import * as tf from '@tensorflow/tfjs-node';
+
+// export async function processFrame(buffer, model) {
+//   const img = await loadImage(buffer);
+//   const canvas = createCanvas(img.width, img.height);
+//   const ctx = canvas.getContext('2d');
+//   ctx.drawImage(img, 0, 0);
+
+//   const input = tf.browser.fromPixels(canvas);
+//   const faces = await model.estimateFaces(input, false);
+//   input.dispose();
+
+//   faces.forEach(face => {
+//     const { topLeft, bottomRight } = face;
+//     const [x1, y1] = topLeft;
+//     const [x2, y2] = bottomRight;
+
+//     ctx.strokeStyle = 'red';
+//     ctx.lineWidth = 2;
+//     ctx.strokeRect(x1, y1, x2 - x1, y2 - y1);
+//   });
+
+//   return canvas;
+// }
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.3</a></p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+
+</body>
+</html>

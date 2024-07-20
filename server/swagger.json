@@ -1,0 +1,107 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Tensorflow Face Detection - Documentation",
+      "description": "API for face detection in live streaming video",
+      "contact": {
+        "name": "Chandrahas Patel",
+        "email": "chandrahaspatel32@gmail.com",
+        "country": "India"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:5000"
+      }
+    ],
+    "paths": {
+      "/frame": {
+        "post": {
+          "summary": "Send live video frame for processing",
+          "operationId": "sendFrame",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "frameData": {
+                      "type": "string",
+                      "description": "Base64-encoded image data of the video frame"
+                    }
+                  },
+                  "required": ["frameData"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Processed frame data",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "frameDataUrl": {
+                        "type": "string",
+                        "description": "URL of processed image frame"
+                      },
+                      "faces": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "topLeft": {
+                              "type": "array",
+                              "items": { "type": "number" }
+                            },
+                            "bottomRight": {
+                              "type": "array",
+                              "items": { "type": "number" }
+                            },
+                            "landmarks": {
+                              "type": "object",
+                              "right_eye": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              },
+                              "left_eye": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              },
+                              "nose": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              },
+                              "mouth": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              },
+                              "right_ear": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              },
+                              "left_ear": {
+                                "type": "array",
+                                "items": { "type": "number" }
+                              }
+                            },
+                            "probability": { "type": "number" }
+                          },
+                          "required": ["topLeft", "bottomRight", "landmarks", "probability"]
+                        }
+                      }
+                    },
+                    "required": ["frameDataUrl", "faces"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
