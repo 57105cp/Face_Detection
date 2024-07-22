@@ -21,6 +21,7 @@ This is a live video face detection project using React for the frontend, Node.j
 ```bash
 git clone [https://github.com/your-username/face-detection-project.git](https://github.com/57105cp/Face_Detection.git)
 cd face-detection-project
+```
 
 ## Project Structure
 .
