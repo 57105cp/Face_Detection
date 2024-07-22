@@ -26,20 +26,25 @@ cd face-detection-project
 ## Project Structure
 ```bash
 .
-├── front
+├── client
 │   ├── Dockerfile
 │   ├── package.json
 │   ├── public
-│   ├── src
-│   └── ... # other frontend files
+|   ├── src
+|        ├── app.js
+|        ├── index.js
+│   
 ├── server
+|   ├── docs
 │   ├── Dockerfile
 │   ├── index.js
+|   ├── jsdoc.json
+|   ├── swagger.json
 │   ├── package.json
 │   ├── src
-│   │   ├── frameProcessor.js
-│   │   └── modelLoader.js
-│   └── ... # other backend files
+│       ├── frameProcessor.js
+│       └── modelLoader.js
+│   
 ├── docker-compose.yml
 └── README.md
 ```
