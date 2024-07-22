@@ -19,5 +19,33 @@ This is a live video face detection project using React for the frontend, Node.j
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/face-detection-project.git
+git clone [https://github.com/your-username/face-detection-project.git](https://github.com/57105cp/Face_Detection.git)
 cd face-detection-project
+
+## Project Structure
+.
+├── front
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── public
+│   ├── src
+│   └── ... # other frontend files
+├── server
+│   ├── Dockerfile
+│   ├── index.js
+│   ├── package.json
+│   ├── src
+│   │   ├── frameProcessor.js
+│   │   └── modelLoader.js
+│   └── ... # other backend files
+├── docker-compose.yml
+└── README.md
+
+## Docker Setup
+sudo docker-compose down
+
+# Rebuild Docker images
+sudo docker-compose build
+
+# Start Docker containers
+sudo docker-compose up
