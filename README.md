@@ -24,6 +24,7 @@ cd face-detection-project
 ```
 
 ## Project Structure
+```bash
 .
 ├── front
 │   ├── Dockerfile
@@ -41,12 +42,18 @@ cd face-detection-project
 │   └── ... # other backend files
 ├── docker-compose.yml
 └── README.md
+```
 
 ## Docker Setup
-sudo docker-compose down
+  - sudo docker-compose down
+  - sudo docker-compose build
+  - sudo docker-compose up
 
-# Rebuild Docker images
-sudo docker-compose build
-
-# Start Docker containers
-sudo docker-compose up
+## Access the Application
+  - Frontend will be accessible at http://localhost:3000.
+  - Backend runs on http://localhost:5000.
+    
+## Usage
+  - Open the application in your browser at http://localhost:3000.
+  - Click on "Start Video" to start the live video stream.
+  - The application will start detecting faces in real-time and display the coordinates and landmarks of detected faces.
